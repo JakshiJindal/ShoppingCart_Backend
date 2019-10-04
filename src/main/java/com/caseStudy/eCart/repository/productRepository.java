@@ -15,6 +15,7 @@ public interface productRepository extends JpaRepository<products, Long> {
 
     List<products> findAllByPrice(Double p);
 
-    List<products> findAllByPriceBetween(Double p,Double p2);
+    List<products> findByCategoryAndPriceBetween(String c,Double p,Double p2);
 
+    List<products> findAllByPriceBetween(Double p, Double p2);
 }

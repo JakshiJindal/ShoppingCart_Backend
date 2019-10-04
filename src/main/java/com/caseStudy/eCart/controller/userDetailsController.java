@@ -32,7 +32,7 @@ public class userDetailsController {
 
         note.setUsername(noteDetails.getUsername());
         note.setPassword(noteDetails.getPassword());
-
+        note.setActive(noteDetails.getActive());
         userDetails updatedNote = p.save(note);
         return updatedNote;
     }

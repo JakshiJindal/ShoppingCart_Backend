@@ -23,6 +23,17 @@ public class products {
 
     @Column(name="category")
 private String category;
+
+    public String getSrc() {
+        return src;
+    }
+
+    public void setSrc(String src) {
+        this.src = src;
+    }
+
+    @Column(name="src")
+    private String src;
     public Long getId() {
         return id;
     }

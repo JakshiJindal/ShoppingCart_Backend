@@ -10,10 +10,21 @@ public class userDetails {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
+    }
+
     @Column(name="username")
     private String username;
     @Column(name="password")
     private String password;
+    @Column(name="active")
+    private int active;
     public String getUsername() {
         return username;
     }
