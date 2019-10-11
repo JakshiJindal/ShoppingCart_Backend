@@ -10,7 +10,12 @@ public class userDetails {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name="email")
+    private String email;
+    @Column(name="password")
+    private String password;
+    @Column(name="active")
+    private int active;
     public int getActive() {
         return active;
     }
@@ -18,19 +23,12 @@ public class userDetails {
     public void setActive(int active) {
         this.active = active;
     }
-
-    @Column(name="username")
-    private String username;
-    @Column(name="password")
-    private String password;
-    @Column(name="active")
-    private int active;
     public String getUsername() {
-        return username;
+        return email;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.email = username;
     }
 
     public String getPassword() {

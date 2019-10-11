@@ -1,21 +1,21 @@
 package com.caseStudy.eCart.models;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name="users")
-public class users {
+@Table(name="login")
+public class login {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long userid;
-    @Column(name="username")
-    private String username;
+    private Long id;
+    @Column(name="email")
+    private String email;
     @Column(name="password")
     private String password;
     @Column(name="active")
     private int active;
-    @Column(name="role")
-    private String role;
     public int getActive() {
         return active;
     }
@@ -23,12 +23,13 @@ public class users {
     public void setActive(int active) {
         this.active = active;
     }
+
     public String getUsername() {
-        return username;
+        return email;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.email = username;
     }
 
     public String getPassword() {
@@ -39,21 +40,11 @@ public class users {
         this.password = password;
     }
 
-    public Long getUserid() {
-        return userid;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserid(Long userid) {
-        this.userid = userid;
+    public void setId(Long id) {
+        this.id = id;
     }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-
 }

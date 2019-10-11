@@ -24,15 +24,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void globalSecurityConfig(AuthenticationManagerBuilder auth) throws Exception{
         auth.
                 jdbcAuthentication().dataSource(dataSource)
-                        .usersByUsernameQuery("select email,password,active from users where email=?")
-                        .authoritiesByUsernameQuery("select email,role from users where email=?");
+                        .usersByUsernameQuery("select username,password,active from users where username=?")
+                        .authoritiesByUsernameQuery("select username,role from users where username=?");
 
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http.csrf().disable()
                 .authorizeRequests().antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                .antMatchers("/signup").permitAll()
+                .antMatchers("/api/addUser").permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic();
         http.cors();

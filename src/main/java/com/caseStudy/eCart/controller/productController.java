@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-@CrossOrigin(origins="http://localhost:4200")
+import java.util.Optional;
+
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class productController {
@@ -31,8 +33,8 @@ public class productController {
     public products updateProducts(@PathVariable(value = "id") Long noteId,
                                   @Valid @RequestBody products noteDetails) {
 
-        products note = productRepository.findById(noteId)
-                .orElseThrow(() -> new ResourceNotFound("Note", "id", noteId));
+        products note = productRepository.findByPid(noteId);
+               // .orElseThrow(() -> new ResourceNotFound("Note", "id", noteId));
 
         note.setSrc(noteDetails.getSrc());
 
@@ -44,8 +46,8 @@ public class productController {
     public products updateProduct(@PathVariable(value = "id") Long noteId,
                                    @Valid @RequestBody products noteDetails) {
 
-        products note = productRepository.findById(noteId)
-                .orElseThrow(() -> new ResourceNotFound("Note", "id", noteId));
+        products note = productRepository.findByPid(noteId);
+              //  .orElseThrow(() -> new ResourceNotFound("Note", "id", noteId));
 
         note.setName(noteDetails.getName());
 
@@ -57,6 +59,11 @@ public class productController {
     public List<products> getProductByCategory(@PathVariable(value="category")String category)
     {
         return productRepository.findAllByCategory(category);
+    }
+    @GetMapping("/products/{id}")
+    public products getProductByCategory(@PathVariable(value="id")Long id)
+    {
+        return productRepository.findByPid(id);
     }
     @GetMapping("/product/{price}")
     public List<products> getProductByPrice(@PathVariable(value="price")Double price)
@@ -75,8 +82,8 @@ public class productController {
     }
     @DeleteMapping("/product/{id}")
     public ResponseEntity<?> deleteNote(@PathVariable(value = "id") Long noteId) {
-        products note = productRepository.findById(noteId)
-                .orElseThrow(() -> new ResourceNotFound("Note", "id", noteId));
+        products note = productRepository.findByPid(noteId);
+               // .orElseThrow(() -> new ResourceNotFound("Note", "id", noteId));
         productRepository.delete(note);
 
         return ResponseEntity.ok().build();
