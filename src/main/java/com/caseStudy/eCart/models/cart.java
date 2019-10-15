@@ -6,22 +6,34 @@ import javax.persistence.*;
 @Table(name = "cart")
 public class cart {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cid;
-   @ManyToOne
+    @ManyToOne
     private products items;
-   @ManyToOne
+    @ManyToOne
     private users user;
-@Column(name="quantity")
-private int quantity;
-public cart(){
+    @Column(name = "quantity")
+    private int quantity;
+@Column(name = "total")
+private double total;
 
-}
-    public cart(com.caseStudy.eCart.models.products items,com.caseStudy.eCart.models.users user,int quantity)
-    {
-        this.items=items;
-        this.user=user;
-        this.quantity=quantity;
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public cart() {
+
+    }
+
+    public cart(com.caseStudy.eCart.models.products items, com.caseStudy.eCart.models.users user, int quantity) {
+        this.items = items;
+        this.user = user;
+        this.quantity = quantity;
+
     }
 
     public Long getId() {

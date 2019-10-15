@@ -11,7 +11,7 @@ import java.util.Optional;
 public class UserService {
     private UsersRepository usersRepository;
 
-    public Optional<users> CurrentUser(Principal principal) {
+   /* public users CurrentUser(Principal principal) {
         String email=principal.getName();
         return usersRepository.findByUsername(email);
     }
@@ -23,11 +23,11 @@ public Long getUserId(Principal principal)
 }
 public String getUserRole(Principal principal) {
         return usersRepository.findByUsername(principal.getName()).get().getRole();//.getRoleid();
-}
+}*/
 
-public Optional<users> getUserProfile(Principal principal) {
+/*public users getUserProfile( Principal principal) {
         return usersRepository.findByUsername(principal.getName());
-}
+}*/
 /*public ResponseEntity<?> checkDetails(users user,Principal principal) {
         Optional<users> usercheck=usersRepository.findByUsername(principal.getName());
         Optional<users> usercheckinfo=usersRepository.findByUsername(users.getusername());
@@ -36,3 +36,4 @@ public Optional<users> getUserProfile(Principal principal) {
 }*/
 
 }
+

@@ -1,6 +1,7 @@
 package com.caseStudy.eCart.service;
 
 import com.caseStudy.eCart.models.cart;
+import com.caseStudy.eCart.models.orderHistory;
 import com.caseStudy.eCart.models.products;
 import com.caseStudy.eCart.models.users;
 import com.caseStudy.eCart.repository.*;
@@ -19,34 +20,43 @@ public class CartService {
     UsersRepository userRepository;
     @Autowired
     CartRepository cartRepository;
-/*    @Autowired
-    private OrderHistoryRepository orderHistoryRepository;*/
+    @Autowired
+    private OrderHistoryRepository orderHistoryRepository;
 
+    public List<orderHistory> showHistory(Long user_id,Principal principal)
+    {
+        users user=userRepository.findByUserid(user_id);
+        return orderHistoryRepository.findAllByUser(user);
+    }
     public cart addProducts(Long userid, Long productid) {
         products product = productRepository.findByPid(productid);
         users user = userRepository.findByUserid(userid);
         if (cartRepository.findByUserAndItems(user, product).isPresent()) {
             cart car = cartRepository.findByUserAndItems(user, product).get();
-            // fixedCart fixedcart=fixedCartRepository.findByRefid().intvalue();
-
             car.setQuantity(car.getQuantity() + 1);
-            // fixedcart.setQuantity(fixedcart.getQuantity()+1);
-            cartRepository.saveAndFlush(car);
-            //  fixedCartRepository.save(fixedcart);
+car.setTotal(car.getQuantity()*product.getPrice());
+
+            cartRepository.save(car);
+
         } else {
-            cart c = new cart(product, user, 1);
-            //  fixedCart fc=new fixedCart(item,user,1);
+            cart c = new cart();
+            c.setUser(user);
+            c.setItems(product);
+            c.setQuantity(1);
+c.setTotal(product.getPrice());
+
             cartRepository.save(c);
-            // fixedCartRepository.save(fc);
+
         }
         return  cartRepository.findByUserAndItems(user, product).get();
     }
 
- public String addtocart(Long userid,Long productid)
+ /*public String addtocart(Long userid,Long productid)
      {
          products products= productRepository.findByPid(productid);
          users user=userRepository.findByUserid(userid);
          if(cartRepository.findByUserAndItems(user,products).isPresent()){
+
              return "this item is already in your cart";
          }
          else{
@@ -54,12 +64,11 @@ public class CartService {
              cartRepository.save(cart1);
              return "Sucessfully added";
        }
-   }
+   }*/
 
-    public Optional<cart> showcart(Long productid, Principal principal) {
+    public List<cart> showcart(Long productid, Principal principal) {
         users user = userRepository.findByUsername(principal.getName()).get();
-        products product = productRepository.findByPid(productid);
-        return cartRepository.findByUserAndItems(user,product);
+        return cartRepository.findByUserAndItems_Active(user,1);
     }
 
   public String clearcart(Long userid,Principal principal) {
@@ -71,38 +80,72 @@ public class CartService {
         return "cart cleared";
     }
  public double checkout(Long userId,Principal principal) {
-return 2;
+     users user = userRepository.findByUserid(userId);
+     double p;
+     double total=0;
+     List<cart> cartItems = cartRepository.findAllByUser(user);
+     for(cart car:cartItems)
+     {
+         orderHistory order=new orderHistory();
+         order.setItems(car.getItems());
+         order.setUser(car.getUser());
+          p=car.getItems().getPrice();
+         order.setQuantity(car.getQuantity());
+         total=total+car.getQuantity()*p;
+         order.setPrice((int) (car.getQuantity()*p));
+         order.setDate();
+         orderHistoryRepository.save(order);
+     }
+     clearcart(userId,principal);
+     return total;
     }
 
+public Optional<cart> removeCart(Long userId, Long productid){
+    products product = productRepository.findByPid(productid);
+    users user = userRepository.findByUserid(userId);
+            cart car = cartRepository.findByUserAndItems(user, product).get();
+    cartRepository.delete(car);
+    return  cartRepository.findByUserAndItems(user, product);
+}
 
-
-    public String removecart(Long userId, Long productid) {
+    public Optional<cart> removeToproduct(Long userId, Long productid) {
         products product = productRepository.findByPid(productid);
         users user = userRepository.findByUserid(userId);
-        if (cartRepository.findByUserAndItems(user, product).get().getQuantity() <= 1) {
-                   cart car2 = cartRepository.findByUserAndItems(user, product).get();
-                   cartRepository.delete(car2);
-        } else  {
-             cart car = cartRepository.findByUserAndItems(user, product).get();
+            if (cartRepository.findByUserAndItems(user, product).get().getQuantity() <= 1) {
+                cart car = cartRepository.findByUserAndItems(user, product).get();
+                cartRepository.delete(car);
+            } else {
+                cart car = cartRepository.findByUserAndItems(user, product).get();
 
-             car.setQuantity(car.getQuantity()-1);
-             cartRepository.save(car);
-            //fixedCartRepository.save(fixedcart);
-        }
-        return "removed";
+                car.setQuantity(car.getQuantity() - 1);
+                cartRepository.save(car);
+                //fixedCartRepository.save(fixedcart);
+            }
+
+        return  cartRepository.findByUserAndItems(user, product);
     }
- /*   public String decreaseQuantity(Long productid, Principal principal)
-    {
+    public String decreaseQuantity(Long productid, Principal principal) {
         products product = productRepository.findByPid(productid);
 
         users user = userRepository.findByUsername(principal.getName()).get();
         cart car = cartRepository.findByUserAndItems(user, product).get();
         if (car.getQuantity() == 1) {
-           return "quantity canot be decreased further";
+            return "quantity canot be decreased further";
         } else {
-           car.setQuantity(car.getQuantity()-1);
-           cartRepository.save(car);
-           return "quantity decreased";
-        }*/
+            car.setQuantity(car.getQuantity() - 1);
+            cartRepository.save(car);
+            return "quantity decreased";
+        }
     }
+
+    public double calPrice(Long userId, Principal principal) {
+        users user = userRepository.findByUserid(userId);
+        List<cart> cartItems = cartRepository.findAllByUser(user);
+        double q=0;
+        for(cart car: cartItems) {
+            q=q+car.getTotal();
+        }
+        return q;
+    }
+}
 

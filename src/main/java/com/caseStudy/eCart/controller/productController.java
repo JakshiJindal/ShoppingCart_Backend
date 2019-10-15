@@ -29,7 +29,7 @@ public class productController {
     public products createProducts(@Valid @RequestBody products note) {
         return productRepository.save(note);
     }
-    @PutMapping("/products/{id}")
+    @PutMapping("/productsss/{id}")
     public products updateProducts(@PathVariable(value = "id") Long noteId,
                                   @Valid @RequestBody products noteDetails) {
 
@@ -37,28 +37,22 @@ public class productController {
                // .orElseThrow(() -> new ResourceNotFound("Note", "id", noteId));
 
         note.setSrc(noteDetails.getSrc());
-
-
+note.setName(noteDetails.getName());
+note.setActive(note.getActive());
+note.setCategory(note.getCategory());
+note.setPrice(note.getPrice());
         products updatedNote = productRepository.save(note);
         return updatedNote;
     }
-    @PutMapping("/product/{id}")
-    public products updateProduct(@PathVariable(value = "id") Long noteId,
-                                   @Valid @RequestBody products noteDetails) {
-
-        products note = productRepository.findByPid(noteId);
-              //  .orElseThrow(() -> new ResourceNotFound("Note", "id", noteId));
-
-        note.setName(noteDetails.getName());
-
-
-        products updatedNote = productRepository.save(note);
-        return updatedNote;
-    }
-    @GetMapping("/products/{category}")
+    @GetMapping("/productss/{category}")
     public List<products> getProductByCategory(@PathVariable(value="category")String category)
     {
         return productRepository.findAllByCategory(category);
+    }
+    @GetMapping("/productsss/{name}")
+    public List<products> getProductByName(@PathVariable(value="name")String name)
+    {
+        return productRepository.findAllByName(name);
     }
     @GetMapping("/products/{id}")
     public products getProductByCategory(@PathVariable(value="id")Long id)

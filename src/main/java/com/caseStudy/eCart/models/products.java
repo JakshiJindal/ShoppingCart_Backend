@@ -23,7 +23,7 @@ public class products {
         return active;
     }
 
-    public void setActive(int active) {
+    public void setActive(int active ) {
         this.active = active;
     }
 
@@ -62,7 +62,7 @@ public class products {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 }
