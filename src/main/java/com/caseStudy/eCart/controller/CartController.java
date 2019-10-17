@@ -37,7 +37,12 @@ public class CartController {
     public cart addtocart(@PathVariable Long productid, Principal principal) {
         return cartService.addProducts(currentUserService.getUserId(principal), productid);
     }
-
+    @RequestMapping(value="/decreaseQuantity/{productid}",method= RequestMethod.GET)
+    @ResponseBody
+    public Optional<cart> decreaseQuantity(Principal principal, @PathVariable Long productid)
+    {
+        return cartService.decreaseQuantity(productid,principal);
+    }
     @RequestMapping(value = "/showcart/recieve", method = RequestMethod.GET)
     @ResponseBody
     public List<cart> showcart(Principal principal)
@@ -57,9 +62,9 @@ public class CartController {
     {
         return cartService.clearcart(currentUserService.getUserId(principal),principal);
     }
-    @RequestMapping(value="/removeToProduct/recieve/{productid}",method= RequestMethod.GET)
+    @RequestMapping(value="/removeToProduct/recieve/{productid}",method= RequestMethod.POST)
     @ResponseBody
-    public Optional<cart> removetoProduct( @PathVariable Long productid,Principal principal)
+    public Optional<cart> removetoProduct(@PathVariable Long productid, Principal principal)
     {
         return cartService.removeToproduct(currentUserService.getUserId(principal),productid);
     }
@@ -68,12 +73,6 @@ public class CartController {
     public Optional<cart> removetoCart( @PathVariable Long productid,Principal principal)
     {
         return cartService.removeCart(currentUserService.getUserId(principal),productid);
-    }
-    @RequestMapping(value="/decreaseQuantity/{productid}",method= RequestMethod.GET)
-    @ResponseBody
-    public String decreaseQuantity(Principal principal,@PathVariable Long productid)
-    {
-        return cartService.decreaseQuantity(productid,principal);
     }
     @RequestMapping(value="/price",method= RequestMethod.GET)
     @ResponseBody

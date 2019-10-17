@@ -38,9 +38,9 @@ public class productController {
 
         note.setSrc(noteDetails.getSrc());
 note.setName(noteDetails.getName());
-note.setActive(note.getActive());
-note.setCategory(note.getCategory());
-note.setPrice(note.getPrice());
+note.setActive(noteDetails.getActive());
+note.setCategory(noteDetails.getCategory());
+note.setPrice(noteDetails.getPrice());
         products updatedNote = productRepository.save(note);
         return updatedNote;
     }
