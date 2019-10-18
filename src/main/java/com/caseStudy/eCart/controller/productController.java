@@ -49,6 +49,11 @@ note.setPrice(noteDetails.getPrice());
     {
         return productRepository.findAllByCategory(category);
     }
+    @GetMapping("/prod/{name}")
+    public List<products> getProduct(@PathVariable(value="name")String name)
+    {
+        return productRepository.findAllByNameContaining(name);
+    }
     @GetMapping("/productsss/{name}")
     public List<products> getProductByName(@PathVariable(value="name")String name)
     {

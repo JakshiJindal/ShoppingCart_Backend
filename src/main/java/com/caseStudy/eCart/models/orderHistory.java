@@ -64,9 +64,7 @@ public class orderHistory {
         return LocalDate.now();
     }
 
-    public void setDate(
-
-    ) {
+    public void setDate() {
         this.date = LocalDate.now();
     }
 }

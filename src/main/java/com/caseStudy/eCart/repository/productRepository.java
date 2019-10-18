@@ -20,4 +20,6 @@ public interface productRepository extends JpaRepository<products, Long> {
     List<products> findAllByPriceBetween(Double p, Double p2);
 
     products findByPid(Long id);
+
+    List<products> findAllByNameContaining(String name);
 }
