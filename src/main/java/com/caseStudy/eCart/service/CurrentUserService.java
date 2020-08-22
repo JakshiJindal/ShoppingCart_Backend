@@ -13,7 +13,6 @@ public class CurrentUserService {
     @Autowired
     private UsersRepository usersRepository;
 
-
     public Long getUserId(Principal principal)
     {
         String email=principal.getName();

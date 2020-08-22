@@ -21,6 +21,7 @@ class userController {
     private CurrentUserService currentUserService;
     @Autowired
     private UsersRepository p;
+
     @GetMapping("/userss/{id}")
     public users getUserId(@PathVariable(value = "id") Long userId) {
         return p.findByUserid(userId);
